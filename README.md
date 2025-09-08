@@ -81,6 +81,29 @@
   - Python: 3.10+
 - **Dependencies**: See `requirements.txt` for full list.
 
+
+# AWS Instance Configuration for uncensor-gpt-oss
+
+| Setting            | Recommended Value                          | Notes                                                                 |
+|--------------------|--------------------------------------------|-----------------------------------------------------------------------|
+| **Instance Type**  | `g5.4xlarge`                               | Best balance of VRAM (24GB A10G), CPU, RAM, and cost                  |
+| **GPU**            | 1 × NVIDIA A10G (24GB VRAM)                | Meets LoRA/QLoRA fine-tuning requirements                             |
+| **vCPUs**          | 16                                         | Adequate for preprocessing + training                                |
+| **RAM**            | 64 GB                                      | Handles dataset loading and model overhead                           |
+| **Storage (EBS)**  | 100 GB gp3 (min) / 200 GB gp3 (preferred)  | Larger storage if datasets >50k pairs; gp3 for speed                  |
+| **AMI**            | AWS Deep Learning AMI (Ubuntu, CUDA 11.8+) | Pre-installed GPU drivers and ML libraries                           |
+| **OS**             | Ubuntu 20.04/22.04 LTS                     | Stable for CUDA and Python 3.10+                                      |
+| **Python**         | 3.10+                                      | Required for pipeline dependencies                                   |
+| **Dependencies**   | Install from `requirements.txt`            | Includes torch, transformers, peft, accelerate, datasets, etc.       |
+| **Cost Estimate**  | ~$1.60–$2.00/hr (on-demand)                | ~4–6 hrs/cycle for 10k pairs = ~$20–$50 total for 3–5 cycles          |
+| **Alternative**    | `p3.2xlarge` (1 × V100, 16GB VRAM)         | Works with QLoRA + smaller datasets (5k–10k pairs); slower training   |
+| **Networking**     | Enable SSH (port 22)                       | For remote management                                                 |
+| **Monitoring**     | Enable CloudWatch                          | Track GPU/CPU usage, storage, and costs                              |
+| **Spot Option**    | Yes (recommended)                          | Up to 70% cheaper; use snapshots to protect progress                 |
+
+
+
+
 ## Setup
 
 1. **Clone the Repository**:
